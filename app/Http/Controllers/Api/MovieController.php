@@ -15,9 +15,17 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::all();
+        if (request(['offset']) != null and request(['take']) != null ){
+            $data = request(['take', 'offset']);
+            return Movie::offset($data['offset'])->take($data['take'])->get();
+        }else{
+            return Movie::all();
+        }
     }
 
+    public function count(){
+        return Movie::count();
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -25,3 +25,5 @@ Route::group([
 });
 
 Route::apiResource('movies', 'Api\MovieController');
+Route::get('movies/pages', 'Api\MovieController@getMoviesByPage');
+Route::get('count/movies', 'Api\MovieController@count');
