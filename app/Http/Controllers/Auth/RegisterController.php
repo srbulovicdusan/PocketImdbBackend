@@ -52,6 +52,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'min:6'],
         ]);
     }
 
@@ -63,10 +64,12 @@ class RegisterController extends Controller
      */
     protected function create()
     {
+        $data = request(['name', 'email', 'password', 'password_confirmation']);
+        $validatedData = $this->validator($data)->validate();
         return User::create([
-            'name' => request('name'),
-            'email' => request('email'),
-            'password' => Hash::make(request('password')),
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
         ]);
     }
 }
