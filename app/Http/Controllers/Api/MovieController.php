@@ -15,9 +15,17 @@ class MovieController extends Controller
      */
     public function index()
     {
+        if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
+            $data = request(['page', 'perPage']);
+            return Movie::offset($data['page'] * $data['perPage'])->take($data['perPage'])->get();
+        }
         return Movie::all();
+        
     }
 
+    public function count(){
+        return Movie::count();
+    }
     /**
      * Store a newly created resource in storage.
      *
