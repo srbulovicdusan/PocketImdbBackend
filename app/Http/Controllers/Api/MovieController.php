@@ -34,7 +34,7 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -45,7 +45,7 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        //
+        return Movie::find($id);
     }
 
     /**
