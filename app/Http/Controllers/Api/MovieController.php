@@ -47,7 +47,10 @@ class MovieController extends Controller
     {
         return Movie::find($id);
     }
-
+        
+    public function search($searchParam){
+        return  Movie::where('title', $searchParam)->get();
+    }
     /**
      * Update the specified resource in storage.
      *
