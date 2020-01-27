@@ -48,6 +48,12 @@ class MovieController extends Controller
         return Movie::find($id);
     }
 
+    public function increaseVisits($movieId){
+        $movie = Movie::find($movieId);
+        $movie->num_of_visits = $movie->num_of_visits + 1;
+        $movie->save();
+        return $movie;
+    }
     /**
      * Update the specified resource in storage.
      *
