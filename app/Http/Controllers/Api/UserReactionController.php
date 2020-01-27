@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Movie;
+use App\UserReaction;
 
-class MovieController extends Controller
+class UserReactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +15,19 @@ class MovieController extends Controller
      */
     public function index()
     {
-        if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
-            $data = request(['page', 'perPage']);
-            return Movie::offset($data['page'] * $data['perPage'])->take($data['perPage'])->with('reactions')->get();
-        }
-        return Movie::all()->with('reactions');
-        
+        //
     }
 
-    public function count(){
-        return Movie::count();
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -34,7 +36,12 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $data = request(['user_id', 'movie_id', 'type']);
+        return UserReaction::create([
+            'user_id' => $data['user_id'],
+            'movie_id' => $data['movie_id'],
+            'type' => $data['type'],
+        ]);
     }
 
     /**
@@ -45,7 +52,18 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        return Movie::find($id);
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
