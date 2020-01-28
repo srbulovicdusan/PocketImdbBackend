@@ -17,7 +17,12 @@ class MovieController extends Controller
     {
         if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
             $data = request(['page', 'perPage']);
-            return Movie::offset($data['page'] * $data['perPage'])->take($data['perPage'])->get();
+            return array(
+                'movies' => Movie::offset($data['page'] * $data['perPage'])->take($data['perPage'])->with('reactions')->get(),
+                'page' => $data['page'],
+                'perPage' => $data['perPage'],
+                'totalPages' => Movie::all()->count() % intval($data['perPage']) == 0 ? Movie::all()->count() / intval($data['perPage']) : Movie::all()->count() / intval($data['perPage']) +1
+            );
         }
         return Movie::all();
         
