@@ -4,15 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Movie;
-use App\Services\MovieService;
+use App\UserReaction;
 
-class MovieController extends Controller
+class UserReactionController extends Controller
 {
-
-    public function __construct(MovieService $service){
-        $this->service = $service;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -20,17 +15,19 @@ class MovieController extends Controller
      */
     public function index()
     {
-        if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
-            return $this->service->getAllMoviesByPage(intval(request(['page'])['page']), intval(request(['perPage'])['perPage']));
-        }
-        return $this->service->findAll();
-
-        
+        //
     }
 
-    public function count(){
-        return $this->service->findAll();
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -39,7 +36,19 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        
+
+        $data = request(['movie_id', 'type']);
+        $user = auth()->user();
+        info($user);
+        $reaction = UserReaction::where('user_id', $user->id)->where('movie_id', $data['movie_id'])->get();
+        if (count($reaction) != 0){
+            abort(400, 'You cant like or dislike movie twice.');
+        }
+        return UserReaction::create([
+            'user_id' => $user->id,
+            'movie_id' => $data['movie_id'],
+            'type' => $data['type'],
+        ]);
     }
 
     /**
@@ -50,19 +59,18 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        $this->service->findOne($id);
-    }
-        
-    public function search($searchParam){
-        return  $this->service->search($searchParam);
+        //
     }
 
-
-    public function increaseVisits($movieId){
-        $movie = Movie::find($movieId);
-        $movie->num_of_visits = $movie->num_of_visits + 1;
-        $movie->save();
-        return $movie;
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
