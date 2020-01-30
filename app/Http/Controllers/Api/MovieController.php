@@ -18,8 +18,28 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+  public function filter(){
+          if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
+
+            $data = request(['page', 'perPage']);
+            if (empty(request(['genreFilter']))){
+                return Movie::offset($data['page'] * $data['perPage'])->take($data['perPage'])->get();
+            }else{
+                $genreFilter = request(['genreFilter']);
+                $genres = explode(',', $genreFilter['genreFilter']);
+                $movies =  Movie::whereIn('genre_id', $genres)->get();
+                $movies = $movies->toArray();
+                $moviesByPage = array_chunk($movies, $data['perPage'])[$data['page']];
+                info($moviesByPage);
+                return $moviesByPage;
+            }
+          }
+            return $this->service->findAll();
+
+  }
     public function index()
     {
+        
         if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
             return $this->service->getAllMoviesByPage(intval(request(['page'])['page']), intval(request(['perPage'])['perPage']));
         }
