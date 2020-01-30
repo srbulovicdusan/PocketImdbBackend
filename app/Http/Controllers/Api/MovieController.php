@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Movie;
+use App\Services\MovieService;
 
 class MovieController extends Controller
 {
+
+    public function __construct(MovieService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,20 +21,14 @@ class MovieController extends Controller
     public function index()
     {
         if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
-            $data = request(['page', 'perPage']);
-            return array(
-                'movies' => Movie::offset($data['page'] * $data['perPage'])->take($data['perPage'])->with('reactions')->get(),
-                'page' => $data['page'],
-                'perPage' => $data['perPage'],
-                'totalPages' => Movie::all()->count() % intval($data['perPage']) == 0 ? Movie::all()->count() / intval($data['perPage']) : Movie::all()->count() / intval($data['perPage']) +1
-            );
+            return $this->service->getAllMoviesByPage(intval(request(['page'])['page']), intval(request(['perPage'])['perPage']));
         }
-        return Movie::all();
+        return $this->service->findAll();
         
     }
 
     public function count(){
-        return Movie::count();
+        return $this->service->findAll();
     }
     /**
      * Store a newly created resource in storage.
@@ -50,11 +49,11 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        return Movie::find($id);
+        $this->service->findOne($id);
     }
         
     public function search($searchParam){
-        return  Movie::where('title', $searchParam)->get();
+        return  $this->service->search($searchParam);
     }
     /**
      * Update the specified resource in storage.
