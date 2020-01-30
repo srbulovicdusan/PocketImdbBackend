@@ -31,7 +31,7 @@ Route::get('count/movies', 'Api\MovieController@count');
 Route::get('genres', 'Api\GenreController@index');
 
 
-Route::get('comments/{movieId}', 'Api\CommentController@getAllByMovie');
+Route::get('comments/{movieId}/{page}/{perPage}', 'Api\CommentController@getAllByMovie');
 Route::post('comments', 'Api\CommentController@create');
 
 
