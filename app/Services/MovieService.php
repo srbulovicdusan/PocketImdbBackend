@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 interface MovieService {
-    public function getAllMoviesByPage($page, $perPage);
+    public function getAllMoviesByPage($page, $perPage, $genres);
 
     public function findOne($id);
 
