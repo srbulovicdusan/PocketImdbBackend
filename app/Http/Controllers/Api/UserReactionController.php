@@ -38,17 +38,7 @@ class UserReactionController extends Controller
     {
 
         $data = request(['movie_id', 'type']);
-        $user = auth()->user();
-        info($user);
-        $reaction = UserReaction::where('user_id', $user->id)->where('movie_id', $data['movie_id'])->get();
-        if (count($reaction) != 0){
-            abort(400, 'You cant like or dislike movie twice.');
-        }
-        return UserReaction::create([
-            'user_id' => $user->id,
-            'movie_id' => $data['movie_id'],
-            'type' => $data['type'],
-        ]);
+        
     }
 
     /**
