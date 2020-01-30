@@ -28,7 +28,11 @@ Route::apiResource('movies', 'Api\MovieController');
 Route::get('movies/pages', 'Api\MovieController@getMoviesByPage');
 Route::get('count/movies', 'Api\MovieController@count');
 
+
+Route::post('reactions', 'Api\UserReactionController@store');
+
 Route::put('visits/movie/{movieId}', 'Api\MovieController@increaseVisits');
 
 Route::get('search/movies/{searchParam}', 'Api\MovieController@search');
+
 
