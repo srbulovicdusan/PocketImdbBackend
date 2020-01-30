@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\UserReactionService;
 use App\UserReaction;
 
 class UserReactionController extends Controller
 {
+    public function __construct(UserReactionService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,8 +40,9 @@ class UserReactionController extends Controller
      */
     public function store(Request $request)
     {
-
+        $user = auth()->user();
         $data = request(['movie_id', 'type']);
+        return $this->service->store($data['movieId'], $data['type'], $user);
         
     }
 
