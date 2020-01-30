@@ -17,7 +17,6 @@ class CommentController extends Controller
         return $this->service->getAllByMovie($movieId);
     }
     public function create(AddCommentRequest $request){
-
         $user = auth()->user();
         $comment = $request->validated();
         return $this->service->create($user, $comment);
