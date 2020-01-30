@@ -19,8 +19,7 @@ class CommentController extends Controller
     public function create(AddCommentRequest $request){
 
         $user = auth()->user();
-        $comment = request(['text', 'movieId']);
-        info($comment);
+        $comment = $request->validated();
         return $this->service->create($user, $comment);
     }
 }
