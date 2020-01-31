@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use App\Services\CommentServiceImpl;
-
 use App\Services\MovieServiceImpl;
+use App\Services\WatchItemServiceImpl;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Services\MovieService',
             MovieServiceImpl::class
+          );
+        $this->app->bind(
+            'App\Services\WatchItemService',
+            WatchItemServiceImpl::class
           );
         
     }
