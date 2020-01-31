@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
+    private $genreService;
     public function __construct(GenreService $service){
-        $this->service = $service;
+        $this->genreService = $service;
     }
     public function index(){
-        return $this->service->findAll();
+        return $this->genreService->findAll();
     }
 }

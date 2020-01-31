@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddReactionRequest;
 use App\Services\UserReactionService;
 use App\UserReaction;
 
@@ -38,11 +39,11 @@ class UserReactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddReactionRequest $request)
     {
         $user = auth()->user();
-        $data = request(['movie_id', 'type']);
-        return $this->service->store($data['movieId'], $data['type'], $user);
+        $data = $request->validated();
+        return $this->service->store($data['movie_id'], $data['type'], $user);
         
     }
 
