@@ -4,7 +4,7 @@ use App\WatchItem;
 class WatchItemServiceImpl implements WatchItemService {
 
     public function findAll($id){
-        return WatchItem::where('user_id', $id)->get();
+        return WatchItem::where('user_id', $id)->with('movie')->get();
     }
 
     public function store($movieId, $userId){
@@ -14,7 +14,7 @@ class WatchItemServiceImpl implements WatchItemService {
                 'movie_id'=>$movieId,
                 'user_id'=>$userId,
                 'watched'=>false,
-            ]);
+            ])->load('movie');
         }
         return null;
     }
@@ -24,7 +24,7 @@ class WatchItemServiceImpl implements WatchItemService {
         if ($watchItem != null){
             $watchItem->watched = $watched;
             $watchItem->save();
-            return $watchItem;
+            return $watchItem->load('movie');
         }
         return null;
     }
