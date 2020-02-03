@@ -14,8 +14,6 @@ class MovieServiceImpl implements MovieService{
                     'totalPages' => count($movies) % intval($perPage) == 0 ? count($movies) / intval($perPage) : intval(count($movies) / intval($perPage)) +1
                 );
         }else{
-            //info(Movie::offset($page * $perPage)->take($perPage)->get());
-            //return Movie::offset($page * $perPage)->take($perPage)->get();
             return array(
                 'movies' => Movie::offset($page * $perPage)->take($perPage)->get(),
                 'page' => $page,
@@ -24,6 +22,17 @@ class MovieServiceImpl implements MovieService{
             );
         }
         
+    }
+    public function findPopularMovies(){
+        return collect(Movie::with('reactions')->get()->sortByDesc(function($movie, $id){
+            $numOfLikes = 0;
+            foreach ($movie['reactions'] as $reaction){
+                if ($reaction->type == "LIKE" ){
+                    $numOfLikes++;
+                }
+            }
+            return $numOfLikes;
+        })->values()->take(10));
     }
     public function findAll(){
         return Movie::all();
