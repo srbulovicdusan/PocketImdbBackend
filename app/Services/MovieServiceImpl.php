@@ -25,6 +25,11 @@ class MovieServiceImpl implements MovieService{
         }
         
     }
+    public function findRelatedMovies($movieId){
+        $movie = Movie::find($movieId);
+        return Movie::where('genre_id', $movie->genre_id)->where('id', '!=', $movie->id)->take(10)->get();
+    }
+
     public function findAll(){
         return Movie::all();
     }

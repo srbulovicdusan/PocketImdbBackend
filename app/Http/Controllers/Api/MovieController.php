@@ -18,7 +18,9 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
+    public function getRelatedMovies($movieId){
+        return $this->service->findRelatedMovies($movieId);
+    }
     public function index()
     {
         
