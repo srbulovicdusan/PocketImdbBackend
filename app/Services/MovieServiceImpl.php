@@ -39,5 +39,15 @@ class MovieServiceImpl implements MovieService{
     public function count(){
         return Movie::count();
     }
+    public function create($movie){
+        info($movie['description']);
+        return Movie::create([
+            'title' => $movie['title'],
+            'description' => $movie['description'],
+            'image_url' => $movie['image_url'],
+            'num_of_visits' => 0,
+            'genre_id' => $movie['genre_id'],
+        ]);
+    }
 
 }
