@@ -13,8 +13,9 @@ class CommentController extends Controller
     {
         $this->service = $commentService;
     }
-    public function getAllByMovie($movieId, $page, $perPage){
-        return $this->service->getAllByMovie($movieId, $page, $perPage);
+    public function getAllByMovie($movieId){
+        $data = request(['page', 'perPage']);
+        return $this->service->getAllByMovie($movieId, $data['page'], $data['perPage']);
     }
     public function create(AddCommentRequest $request){
         $user = auth()->user();
