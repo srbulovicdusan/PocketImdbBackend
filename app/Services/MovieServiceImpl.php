@@ -11,7 +11,7 @@ class MovieServiceImpl implements MovieService{
                     'movies' => $moviesByPage,
                     'page' => $page,
                     'perPage' => $perPage,
-                    'totalPages' => count($movies) % intval($perPage) == 0 ? count($movies) / intval($perPage) : intval(count($movies) / intval($perPage)) +1
+                    'totalPages' =>  Movie::all()->count()/ intval($perPage),
                 );
         }else{
             //info(Movie::offset($page * $perPage)->take($perPage)->get());
@@ -20,7 +20,7 @@ class MovieServiceImpl implements MovieService{
                 'movies' => Movie::offset($page * $perPage)->take($perPage)->get(),
                 'page' => $page,
                 'perPage' => $perPage,
-                'totalPages' => Movie::all()->count() % intval($perPage) == 0 ? Movie::all()->count() / intval($perPage) : Movie::all()->count() / intval($perPage) +1
+                'totalPages' => Movie::all()->count()/ intval($perPage),
             );
         }
         
@@ -40,7 +40,6 @@ class MovieServiceImpl implements MovieService{
         return Movie::count();
     }
     public function create($movie){
-        info($movie['description']);
         return Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
