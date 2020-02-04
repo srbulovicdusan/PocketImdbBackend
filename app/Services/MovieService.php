@@ -3,7 +3,7 @@ namespace App\Services;
 interface MovieService {
     public function getAllMoviesByPage($page, $perPage, $genres);
 
-    public function findPopularMovies();
+    public function findPopularMovies($numOfMovies);
 
     public function findOne($id);
 

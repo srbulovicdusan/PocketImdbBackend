@@ -24,7 +24,7 @@ class MovieServiceImpl implements MovieService{
         }
         
     }
-    public function findPopularMovies(){
+    public function findPopularMovies($numOfMovies){
         return Movie::whereHas('reactions', function (Builder $query) {
             $query->where('type', 'like', 'LIKE');
         })->get()->sortByDesc(function($movie, $id){
@@ -35,7 +35,7 @@ class MovieServiceImpl implements MovieService{
                 }
             }
             return $numOfLikes;
-        })->values()->take(10);
+        })->values()->take($numOfMovies);
     }
     public function findAll(){
         return Movie::all();
