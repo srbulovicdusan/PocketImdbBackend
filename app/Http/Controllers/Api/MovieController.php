@@ -70,7 +70,7 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        $this->movieService->findOne($id);
+        return $this->movieService->findOne($id);
     }
         
     public function search($searchParam){

@@ -12,7 +12,7 @@ class MovieServiceImpl implements MovieService{
                     'movies' => $moviesByPage,
                     'page' => $page,
                     'perPage' => $perPage,
-                    'totalPages' =>  Movie::all()->count()/ intval($perPage),
+                    'totalPages' =>  count($movies)/ intval($perPage),
                 );
         }else{
             return array(
@@ -26,11 +26,11 @@ class MovieServiceImpl implements MovieService{
     }
     public function findRelatedMovies($movieId, $numOfMovies){
         $movie = Movie::find($movieId);
-        return Movie::where('genre_id', $movie->genre_id)->where('id', '!=', $movie->id)->take($numOfMovies)->get();
+        return Movie::with('reactions')->where('genre_id', $movie->genre_id)->where('id', '!=', $movie->id)->with('reactions')->take($numOfMovies)->get();
     }
 
     public function findPopularMovies($numOfMovies){
-        return Movie::whereHas('reactions', function (Builder $query) {
+        return Movie::with('reactions')->whereHas('reactions', function (Builder $query) {
             $query->where('type', 'like', 'LIKE');
         })->get()->sortByDesc(function($movie, $id){
             return count($movie['reactions']->where('type', 'LIKE'));
@@ -40,11 +40,11 @@ class MovieServiceImpl implements MovieService{
         return Movie::all();
     }
     public function findOne($id){
-        return Movie::find($id);
+        return Movie::find($id)->load('reactions');
     }
 
     public function search($searchParam){
-        return  Movie::where('title', $searchParam)->get();
+        return  Movie::where('title', $searchParam)->with('reactions')->get();
     }
 
     public function count(){
