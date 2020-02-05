@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RelatedMovieRequest;
 use App\Http\Requests\AddMovieRequest;
 use App\Movie;
 use App\Services\MovieService;
@@ -19,6 +20,10 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getRelatedMovies(RelatedMovieRequest $request, $movieId){
+        $data = $request->validated();
+        return $this->movieService->findRelatedMovies($movieId, $data['numOfMovies']);
+    }
     public function getPopularMovies(){
         $data=request(['numOfMovies']);
         return $this->movieService->findPopularMovies($data['numOfMovies']);

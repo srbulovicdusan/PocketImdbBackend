@@ -24,6 +24,11 @@ class MovieServiceImpl implements MovieService{
         }
         
     }
+    public function findRelatedMovies($movieId, $numOfMovies){
+        $movie = Movie::find($movieId);
+        return Movie::where('genre_id', $movie->genre_id)->where('id', '!=', $movie->id)->take($numOfMovies)->get();
+    }
+
     public function findPopularMovies($numOfMovies){
         return Movie::whereHas('reactions', function (Builder $query) {
             $query->where('type', 'like', 'LIKE');
