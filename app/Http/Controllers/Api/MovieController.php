@@ -19,7 +19,11 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
+    public function getPopularMovies(){
+        $data=request(['numOfMovies']);
+        return $this->movieService->findPopularMovies($data['numOfMovies']);
+    }
+    
     public function index()
     {
         

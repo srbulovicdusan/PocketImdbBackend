@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Movie;
+use Illuminate\Database\Eloquent\Builder;
 class MovieServiceImpl implements MovieService{
     public function getAllMoviesByPage($page, $perPage, $genres){
         if ($genres != null && count($genres) != 0){
@@ -14,8 +15,6 @@ class MovieServiceImpl implements MovieService{
                     'totalPages' =>  Movie::all()->count()/ intval($perPage),
                 );
         }else{
-            //info(Movie::offset($page * $perPage)->take($perPage)->get());
-            //return Movie::offset($page * $perPage)->take($perPage)->get();
             return array(
                 'movies' => Movie::offset($page * $perPage)->take($perPage)->with('reactions')->get(),
                 'page' => $page,
@@ -24,6 +23,13 @@ class MovieServiceImpl implements MovieService{
             );
         }
         
+    }
+    public function findPopularMovies($numOfMovies){
+        return Movie::whereHas('reactions', function (Builder $query) {
+            $query->where('type', 'like', 'LIKE');
+        })->get()->sortByDesc(function($movie, $id){
+            return count($movie['reactions']->where('type', 'LIKE'));
+        })->values()->take($numOfMovies);
     }
     public function findAll(){
         return Movie::all();
