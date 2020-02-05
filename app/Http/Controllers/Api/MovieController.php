@@ -18,10 +18,12 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
+    public function storeFromOmdb(){
+        $movie = request(['title', 'description', 'genre', 'image_url']);
+        $this->service->storeOMDBMovie($movie);
+    }
     public function index()
-    {
-        
+    { 
         if (!empty(request(['page'])) and !empty(request(['perPage'])) ){
             $genres = null;
             if (!empty(request(['genreFilter']))){

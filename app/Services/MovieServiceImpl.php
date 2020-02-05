@@ -1,5 +1,7 @@
 <?php
 namespace App\Services;
+
+use App\Genre;
 use App\Movie;
 class MovieServiceImpl implements MovieService{
     public function getAllMoviesByPage($page, $perPage, $genres){
@@ -25,6 +27,25 @@ class MovieServiceImpl implements MovieService{
         }
         
     }
+    public function storeOMDBMovie($movie){
+        $genreName = $movie['genre'];
+        $genreFromDb = Genre::where('name', $genreName)->first();
+        if (!$genreFromDb){
+            $genreFromDb = Genre::create([
+                'name' => strtolower($genreName),
+            ]);
+        }
+        $movie =  Movie::create([
+            'title' => $movie['title'],
+            'description' => $movie['description'],
+            'image_url' => $movie['image_url'],
+            'num_of_visits' => 0,
+            'genre_id' => $genreFromDb->id,
+        ]);
+        $movie->genre_id = $genreFromDb->id;
+        $movie->save();    
+    }
+
     public function findAll(){
         return Movie::all();
     }
