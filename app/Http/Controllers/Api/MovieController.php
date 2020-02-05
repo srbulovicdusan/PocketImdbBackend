@@ -21,11 +21,9 @@ class MovieController extends Controller
      */
     public function getPopularMovies(){
         $data=request(['numOfMovies']);
-        return $this->service->findPopularMovies($data['numOfMovies']);
+        return $this->movieService->findPopularMovies($data['numOfMovies']);
     }
-    public function getRelatedMovies($movieId){
-        return $this->service->findRelatedMovies($movieId);
-    }
+    
     public function index()
     {
         
