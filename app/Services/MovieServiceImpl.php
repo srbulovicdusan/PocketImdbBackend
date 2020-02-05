@@ -4,7 +4,7 @@ use App\Movie;
 class MovieServiceImpl implements MovieService{
     public function getAllMoviesByPage($page, $perPage, $genres){
         if ($genres != null && count($genres) != 0){
-            $movies =  Movie::whereIn('genre_id', $genres)->get();
+            $movies =  Movie::whereIn('genre_id', $genres)->with('reactions')->get();
                 $movies = $movies->toArray();
                 $moviesByPage = array_chunk($movies, $perPage)[$page];
                 return array(
@@ -17,7 +17,7 @@ class MovieServiceImpl implements MovieService{
             //info(Movie::offset($page * $perPage)->take($perPage)->get());
             //return Movie::offset($page * $perPage)->take($perPage)->get();
             return array(
-                'movies' => Movie::offset($page * $perPage)->take($perPage)->get(),
+                'movies' => Movie::offset($page * $perPage)->take($perPage)->with('reactions')->get(),
                 'page' => $page,
                 'perPage' => $perPage,
                 'totalPages' => Movie::all()->count()/ intval($perPage),
