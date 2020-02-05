@@ -32,7 +32,7 @@ Route::get('popular/movies', 'Api\MovieController@getPopularMovies');
 Route::get('genres', 'Api\GenreController@index');
 
 
-Route::get('comments/{movieId}', 'Api\CommentController@getAllByMovie');
+Route::get('movie/{movieId}/comments', 'Api\CommentController@getAllByMovie');
 Route::post('comments', 'Api\CommentController@create');
 
 

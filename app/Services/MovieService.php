@@ -13,4 +13,5 @@ interface MovieService {
 
     public function findAll();
 
+    public function create($movie);
 }

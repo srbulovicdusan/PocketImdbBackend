@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddMovieRequest;
 use App\Movie;
 use App\Services\MovieService;
 
 class MovieController extends Controller
 {
-
+    private $movieService;
     public function __construct(MovieService $service){
-        $this->service = $service;
+        $this->movieService = $service;
     }
     /**
      * Display a listing of the resource.
@@ -34,17 +35,17 @@ class MovieController extends Controller
                 $genreFilter = request(['genreFilter']);
                 $genres = explode(',', $genreFilter['genreFilter']);
             }
-            return $this->service->getAllMoviesByPage(intval(request(['page'])['page']), intval(request(['perPage'])['perPage']), $genres);
+            return $this->movieService->getAllMoviesByPage(intval(request(['page'])['page']), intval(request(['perPage'])['perPage']), $genres);
 
             
         }
-        return $this->service->findAll();
+        return $this->movieService->findAll();
 
         
     }
 
     public function count(){
-        return $this->service->count();
+        return $this->movieService->count();
     }
     /**
      * Store a newly created resource in storage.
@@ -52,9 +53,10 @@ class MovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddMovieRequest $request)
     {
-        
+        $data = $request->validated();
+        return $this->movieService->create($data);
     }
 
     /**
@@ -65,11 +67,11 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        $this->service->findOne($id);
+        $this->movieService->findOne($id);
     }
         
     public function search($searchParam){
-        return  $this->service->search($searchParam);
+        return  $this->movieService->search($searchParam);
     }
 
 
