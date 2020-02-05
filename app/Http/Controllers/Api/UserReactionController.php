@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddReactionRequest;
+use App\Services\UserReactionService;
 use App\UserReaction;
 
 class UserReactionController extends Controller
 {
+    public function __construct(UserReactionService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -34,21 +39,12 @@ class UserReactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddReactionRequest $request)
     {
-
-        $data = request(['movie_id', 'type']);
         $user = auth()->user();
-        info($user);
-        $reaction = UserReaction::where('user_id', $user->id)->where('movie_id', $data['movie_id'])->get();
-        if (count($reaction) != 0){
-            abort(400, 'You cant like or dislike movie twice.');
-        }
-        return UserReaction::create([
-            'user_id' => $user->id,
-            'movie_id' => $data['movie_id'],
-            'type' => $data['type'],
-        ]);
+        $data = $request->validated();
+        return $this->service->store($data['movie_id'], $data['type'], $user);
+        
     }
 
     /**

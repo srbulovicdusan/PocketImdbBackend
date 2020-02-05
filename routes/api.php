@@ -27,18 +27,19 @@ Route::group([
 Route::apiResource('movies', 'Api\MovieController');
 Route::get('movies/pages', 'Api\MovieController@getMoviesByPage');
 Route::get('count/movies', 'Api\MovieController@count');
+Route::get('movies/{movieId}/related', 'Api\MovieController@getRelatedMovies')->where('movieId', '[0-9]+');;
+Route::get('popular/movies', 'Api\MovieController@getPopularMovies');
 
 Route::get('genres', 'Api\GenreController@index');
 
 
-Route::get('comments/{movieId}', 'Api\CommentController@getAllByMovie');
+Route::get('movie/{movieId}/comments', 'Api\CommentController@getAllByMovie');
 Route::post('comments', 'Api\CommentController@create');
 
 
 Route::post('reactions', 'Api\UserReactionController@store');
 
 Route::put('visits/movie/{movieId}', 'Api\MovieController@increaseVisits');
-
 Route::get('search/movies/{searchParam}', 'Api\MovieController@search');
 
 Route::get('watchlist', 'Api\WatchItemController@index');

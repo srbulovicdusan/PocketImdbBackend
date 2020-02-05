@@ -3,9 +3,15 @@ namespace App\Services;
 use App\Movie;
 use App\Comment;
 class CommentServiceImpl implements CommentService{
-    public function getAllByMovie($movieId){
+    public function getAllByMovie($movieId, $page, $perPage){
         $movie = Movie::find($movieId);
-        return $movie->comments()->with('user')->get();
+        return array(
+                'comments' => $movie->comments()->offset(intval($page) * intval($perPage))->take($perPage)->with('user')->get(),
+                'total' => $movie->comments()->count(),
+                'perPage' => $perPage,
+                'currentPage' => $page
+            
+        );
     }
 
     public function create($user, $comment){

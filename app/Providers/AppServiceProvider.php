@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\CommentServiceImpl;
 use App\Services\MovieServiceImpl;
 use App\Services\WatchItemServiceImpl;
+use App\Services\GenreServiceImpl;
+use App\Services\UserReactionServiceImpl;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +42,14 @@ class AppServiceProvider extends ServiceProvider
             'App\Services\WatchItemService',
             WatchItemServiceImpl::class
           );
+         $this->app->bind(
+                'App\Services\GenreService',
+                GenreServiceImpl::class
+        );
+        $this->app->bind(
+            'App\Services\UserReactionService',
+            UserReactionServiceImpl::class
+        );
         
     }
 }
