@@ -42,3 +42,7 @@ Route::post('reactions', 'Api\UserReactionController@store');
 Route::put('visits/movie/{movieId}', 'Api\MovieController@increaseVisits');
 Route::get('search/movies/{searchParam}', 'Api\MovieController@search');
 
+Route::get('watchlist', 'Api\WatchItemController@index');
+Route::post('watchlist', 'Api\WatchItemController@store');
+Route::put('watchlist', 'Api\WatchItemController@update');
+Route::delete('watchlist/{id}', 'Api\WatchItemController@delete');
