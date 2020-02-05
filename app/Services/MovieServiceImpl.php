@@ -28,13 +28,7 @@ class MovieServiceImpl implements MovieService{
         return Movie::whereHas('reactions', function (Builder $query) {
             $query->where('type', 'like', 'LIKE');
         })->get()->sortByDesc(function($movie, $id){
-            $numOfLikes = 0;
-            foreach ($movie['reactions'] as $reaction){
-                if ($reaction->type == "LIKE" ){
-                    $numOfLikes++;
-                }
-            }
-            return $numOfLikes;
+            return count($movie['reactions']->where('type', 'LIKE'));
         })->values()->take($numOfMovies);
     }
     public function findAll(){
