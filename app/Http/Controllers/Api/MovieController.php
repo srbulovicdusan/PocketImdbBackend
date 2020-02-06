@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RelatedMovieRequest;
 use App\Http\Requests\AddMovieRequest;
+use App\Http\Requests\SearchMovieRequest;
 use App\Movie;
 use App\Services\MovieService;
 
@@ -73,8 +74,10 @@ class MovieController extends Controller
         return $this->movieService->findOne($id);
     }
         
-    public function search($searchParam){
-        return  $this->movieService->search($searchParam);
+    public function search(SearchMovieRequest $request){
+        $data = request(['searchParam']);
+        info($data['searchParam']);
+        return  $this->movieService->search($data['searchParam']);
     }
 
 
