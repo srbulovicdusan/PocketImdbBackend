@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
-    protected $fillable = ['title', 'description', 'image_url', 'genre_id'];
+    protected $fillable = ['title', 'description', 'image', 'genre_id', 'image_id'];
 
     public function comments()
     {
@@ -14,5 +14,8 @@ class Movie extends Model
     }
     public function reactions(){
         return $this->hasMany('App\UserReaction');
+    }
+    public function image(){
+        return $this->belongsTo('App\MovieImage');
     }
 }

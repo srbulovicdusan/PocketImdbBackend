@@ -57,8 +57,10 @@ class MovieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(AddMovieRequest $request)
-    {
+    {   
         $data = $request->validated();
+        
+
         return $this->movieService->create($data);
     }
 
