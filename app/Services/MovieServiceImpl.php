@@ -47,12 +47,10 @@ class MovieServiceImpl implements MovieService{
         return  Movie::where('title', $searchParam)->with('reactions')->get();
     }
     public function elasticSearch($searchParam){
-        Movie::putMapping($ignoreConflicts = true);
-
         $movies= Movie::complexSearch(array(
             'body' => array(
                 'query' => array(
-                    'term' => array(
+                    'match' => array(
                         'title' => $searchParam,
                     )   
                 )

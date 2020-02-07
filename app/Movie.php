@@ -26,8 +26,8 @@ class Movie extends Model
         ],
     ];
     protected $mappingProperties = array(
-        'title' => array(
-             'type' => 'keyword'
-         )
-     );
+         'title' => array(
+              'type' => 'keyword'
+          )
+    );
 }

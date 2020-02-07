@@ -9,6 +9,14 @@ class MovieTableSeeder extends Seeder
     public function run()
     {
         factory(Movie::class, 50)->create();
-        Movie::addAllToIndex();
+        
+        Movie::createIndex();
+        $mappingProperties = array(
+            'title' => array(
+                 'type' => 'keyword'
+             )
+       );
+       Movie::addAllToIndex();
+        
     }
 }
