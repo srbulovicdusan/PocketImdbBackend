@@ -14,7 +14,7 @@ return array(
     */
 
     'config' => [
-        'hosts'     => ['localhost:9200'],
+        'hosts'     => [env('ELASTIC_HOST')],
         'retries'   => 1,
     ],
 
@@ -27,6 +27,6 @@ return array(
     | Elastiquent models.
     */
 
-    'default_index' => 'my_custom_index_name',
+    'default_index' => env('ELASTIC_DEFAULT_INDEX'),
 
 );
