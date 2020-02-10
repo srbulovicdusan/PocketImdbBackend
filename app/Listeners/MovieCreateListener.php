@@ -3,11 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\MovieCreated;
+use App\Jobs\MovieCreationNotificationJob;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class MovieCreateNotification
+class MovieCreateListener
 {
     /**
      * Create the event listener.
@@ -26,9 +27,6 @@ class MovieCreateNotification
      */
     public function handle(MovieCreated $event)
     {
-        $text = 'A new movie is added to the system. Title: '.$event->movie->title.', description: '.$event->movie->description.', genre: '.$event->movie->load('genre')->genre->name;
-        Mail::raw($text,function ($message) {        
-            $message->to(env('ADMIN_EMAIL'));
-        });
+        MovieCreationNotificationJob::dispatch($event->movie);
     }
 }
