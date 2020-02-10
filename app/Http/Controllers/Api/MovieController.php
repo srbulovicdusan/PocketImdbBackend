@@ -75,9 +75,8 @@ class MovieController extends Controller
     }
         
     public function search(SearchMovieRequest $request){
-        $data = request(['searchParam']);
-        info($data['searchParam']);
-        return  $this->movieService->search($data['searchParam']);
+        $data = $request->validated();
+        return  $this->movieService->search($data['queryParam']);
     }
 
 

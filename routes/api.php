@@ -40,7 +40,7 @@ Route::post('comments', 'Api\CommentController@create');
 Route::post('reactions', 'Api\UserReactionController@store');
 
 Route::put('visits/movie/{movieId}', 'Api\MovieController@increaseVisits');
-Route::post('search/movies', 'Api\MovieController@search');
+Route::get('search/movies', 'Api\MovieController@search');
 
 Route::get('watchlist', 'Api\WatchItemController@index');
 Route::post('watchlist', 'Api\WatchItemController@store');

@@ -18,10 +18,16 @@ class SearchMovieRequest extends FormRequest
      *
      * @return array
      */
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+        $data['queryParam'] = request()->queryParam;
+        return $data;
+    }
     public function rules()
     {
         return [
-            'title' => 'string|max:255'
+            'queryParam' => 'required|string|max:255|min:1'
         ];
     }
 }
