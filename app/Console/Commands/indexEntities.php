@@ -38,7 +38,7 @@ class indexEntities extends Command
      */
     public function handle()
     {
-        Movie::with('reactions')->get()->addToIndex();
+        Movie::addAllToIndex();
 
     }
 }
