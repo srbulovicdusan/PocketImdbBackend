@@ -22,7 +22,7 @@ class CreateMovieImagesTable extends Migration
         });
         Schema::table('movies', function (Blueprint $table) {
             $table->dropColumn('image_url');
-            $table->integer('image_id')->unsigned();
+            $table->integer('image_id')->unsigned()->nullable();
             $table->foreign('image_id')
                   ->references('id')
                   ->on('movie_images');
@@ -37,13 +37,12 @@ class CreateMovieImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movie_images');
         Schema::table('movies', function (Blueprint $table) {
-            $table->integer('image_url')->unsigned()->default(0);
-            $table->dropForeign('image_url');
-            $table->dropColumn('image_url');
-
-
+            $table->string('image_url');
+            $table->dropForeign('image_id');
+            $table->dropColumn('image_id');
         });
+        Schema::dropIfExists('movie_images');
+
     }
 }

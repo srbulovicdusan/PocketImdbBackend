@@ -60,8 +60,8 @@ class MovieServiceImpl implements MovieService{
         if ($image){
             $image_name = time() . '.' . $image->getClientOriginalExtension();
 
-            $destinationFullSize = public_path('storage/fullSize').'/'.$image_name;
-            $destinationThumbnail = public_path('storage/thumbnail').'/'.$image_name;
+            $destinationFullSize = storage_path('app/public/fullSize').'/'.$image_name;
+            $destinationThumbnail = storage_path('app/public/thumbnail').'/'.$image_name;
 
             $createdImage= Image::make($image->getRealPath());
 
@@ -76,24 +76,22 @@ class MovieServiceImpl implements MovieService{
             $savedImage = MovieImage::create([
                 'fullSize' => asset('storage/fullSize/'.$image_name),
                 'thumbnail' => asset('storage/thumbnail/'.$image_name)
-
             ]);
         }else if ($movie['image_url']){ //this is used when creating movie from OMDB
             $savedImage = MovieImage::create([
                 'fullSize' => $movie['image_url'],
                 'thumbnail' => $movie['image_url'],
-
             ]);
-        }else{
-            abort(422, "Image not presented.");
         }
-        return Movie::create([
+        $movie =  Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
             'num_of_visits' => 0,
             'genre_id' => $movie['genre_id'],
-            'image_id' => $savedImage->id,
         ]);
+        $movie->image()->associate($savedImage);
+        $movie->save();
+        return $movie;
         
     }
 

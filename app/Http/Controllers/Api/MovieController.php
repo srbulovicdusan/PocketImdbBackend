@@ -59,8 +59,9 @@ class MovieController extends Controller
     public function store(AddMovieRequest $request)
     {   
         $data = $request->validated();
-        
-
+        if (empty($data['image']) && empty($data['image_url'])){
+            abort(422, "Image not present");
+        }
         return $this->movieService->create($data);
     }
 
