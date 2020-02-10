@@ -1,7 +1,12 @@
 <?php
 namespace App\Services;
+
+use App\Events\MovieCreated;
 use App\Movie;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
+
 class MovieServiceImpl implements MovieService{
     public function getAllMoviesByPage($page, $perPage, $genres){
         if ($genres != null && count($genres) != 0){
@@ -51,13 +56,16 @@ class MovieServiceImpl implements MovieService{
         return Movie::count();
     }
     public function create($movie){
-        return Movie::create([
+        $movie =  Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
             'image_url' => $movie['image_url'],
             'num_of_visits' => 0,
             'genre_id' => $movie['genre_id'],
         ]);
+        event(new MovieCreated($movie));
+        return $movie;
+
     }
 
 }
