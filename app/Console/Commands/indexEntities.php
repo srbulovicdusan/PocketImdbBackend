@@ -38,7 +38,18 @@ class indexEntities extends Command
      */
     public function handle()
     {
-        Movie::addAllToIndex();
-
+        
+        $mappingProperties = array(
+            'title' => array(
+                 'type' => 'keyword'
+             )
+        );
+        Movie::createIndex();
+        Movie::putMapping($mappingProperties);
+        Movie::chunk(Movie::count(), function ($movies) {
+            foreach ($movies as $movie) {
+                $movie->addToIndex();
+            }
+        });
     }
 }
