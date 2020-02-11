@@ -12,9 +12,11 @@
         "barryvdh/laravel-cors": "^0.11.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
+        "intervention/image": "^2.5",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "tymon/jwt-auth": "dev-develop"
+        "tymon/jwt-auth": "dev-develop",
+        "elasticquent/elasticquent": "dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

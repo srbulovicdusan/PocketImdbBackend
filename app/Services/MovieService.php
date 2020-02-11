@@ -11,6 +11,8 @@ interface MovieService {
 
     public function search($searchParam);
 
+    public function elasticSearch($searchParam);
+
     public function count();
 
     public function findAll();
