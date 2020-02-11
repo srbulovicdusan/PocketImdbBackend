@@ -1,6 +1,6 @@
 <?php
 namespace App\Services;
-
+use App\Genre;
 use App\Movie;
 use App\MovieImage;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,6 +50,19 @@ class MovieServiceImpl implements MovieService{
     public function search($searchParam){
         return  Movie::where('title', $searchParam)->with('reactions')->get();
     }
+    public function elasticSearch($searchParam){
+        $movies= Movie::complexSearch(array(
+            'body' => array(
+                'query' => array(
+                    'match' => array(
+                        'title' => $searchParam,
+                    )   
+                )
+            )
+        ));
+        return $movies;
+    }
+
 
     public function count(){
         return Movie::count();
@@ -57,6 +70,13 @@ class MovieServiceImpl implements MovieService{
     public function create($movie){
         $image = $movie['image'];
         $savedImage = null;
+        $genre = $movie['genre'];
+        $genreDB = Genre::where('name', strtolower($genre))->first();
+        if ($genreDB == null){
+            $genreDB = Genre::create([
+                'name' => strtolower($genre),
+            ]);
+        }
         if ($image){
             $image_name = time() . '.' . $image->getClientOriginalExtension();
 
@@ -83,14 +103,15 @@ class MovieServiceImpl implements MovieService{
                 'thumbnail' => $movie['image_url'],
             ]);
         }
-        $movie =  Movie::create([
+        $movie = Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
             'num_of_visits' => 0,
-            'genre_id' => $movie['genre_id'],
+            'genre_id' => $genreDB->id,
         ]);
         $movie->image()->associate($savedImage);
         $movie->save();
+        $movie->addToIndex();
         return $movie;
         
     }

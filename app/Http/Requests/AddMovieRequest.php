@@ -23,9 +23,11 @@ class AddMovieRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255', 'min:1'],
             'description' => ['required', 'string', 'max:255', 'min:1'],
-            'image_url' => ['string', 'min:1', 'max:255'],
             'genre_id' => ['required', 'exists:genres,id'],
-            'image' => ['file', 'image', 'mimes:jpeg,jpg,png', 'max:5000']
+            'image' => ['file', 'image', 'mimes:jpeg,jpg,png', 'max:5000'],
+            'image_url' => ['image_url'],
+            'genre' => ['required', 'string', 'max:255', 'min:1']
+
         ];
     }
 }

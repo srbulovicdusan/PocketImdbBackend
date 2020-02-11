@@ -140,6 +140,7 @@ return [
          * Laravel Framework Service Providers...
          */
         Intervention\Image\ImageServiceProvider::class,
+        Elasticquent\ElasticquentServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -191,7 +192,12 @@ return [
     */
 
     'aliases' => [
+<<<<<<< HEAD
         'Image' => Intervention\Image\Facades\Image::class,
+=======
+        
+        'Es' => Elasticquent\ElasticquentElasticsearchFacade::class,
+>>>>>>> 756ad681303357f223ad6b245dec78170fe85a57
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
