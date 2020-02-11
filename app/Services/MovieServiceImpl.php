@@ -74,8 +74,8 @@ class MovieServiceImpl implements MovieService{
             })->save($destinationThumbnail);
 
             $savedImage = MovieImage::create([
-                'fullSize' => asset('storage/fullSize/'.$image_name),
-                'thumbnail' => asset('storage/thumbnail/'.$image_name)
+                'fullSize' => url('storage/fullSize/'.$image_name),
+                'thumbnail' => url('storage/thumbnail/'.$image_name)
             ]);
         }else if ($movie['image_url']){ //this is used when creating movie from OMDB
             $savedImage = MovieImage::create([
