@@ -2,6 +2,8 @@
 
 use Faker\Generator as Faker;
 use App\Genre;
+use App\MovieImage;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -16,10 +18,12 @@ use App\Genre;
 $factory->define(App\Movie::class, function (Faker $faker) {
     $genreCount = Genre::all()->count();
     $rand = rand(1, $genreCount);
+    $imageCount = MovieImage::all()->count();
+    $randImage = rand(1, $imageCount);
     return [
         'title' => $faker->words(2, true),
         'description' => $faker->paragraph(10, true),
-        'image_url' => $faker->imageUrl(640, 480),
+        'image_id' => $randImage,
         'genre_id' => $rand
     ];
 });

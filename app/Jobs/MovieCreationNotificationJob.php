@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Movie;
+use App\Services\MailService;
+use App\Services\MovieService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,9 +22,13 @@ class MovieCreationNotificationJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Movie $movie)
+    private $mailService;
+    
+    public function __construct(Movie $movie, MailService $mailService)
     {
         $this->movie = $movie;
+        $this->mailService = $mailService;
+
     }
 
     /**
@@ -33,8 +39,6 @@ class MovieCreationNotificationJob implements ShouldQueue
     public function handle()
     {
         $text = 'A new movie is added to the system. Title: '.$this->movie->title.', description: '.$this->movie->description.', genre: '.$this->movie->load('genre')->genre->name;
-        Mail::raw($text,function ($message) {        
-            $message->to(env('ADMIN_EMAIL'));
-        });
+        $this->mailService->sendEmailToAdmins($text);
     }
 }

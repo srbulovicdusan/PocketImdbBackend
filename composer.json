@@ -12,10 +12,16 @@
         "barryvdh/laravel-cors": "^0.11.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
+        "intervention/image": "^2.5",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+<<<<<<< HEAD
         "pda/pheanstalk": "^4.0",
         "tymon/jwt-auth": "dev-develop"
+=======
+        "tymon/jwt-auth": "dev-develop",
+        "elasticquent/elasticquent": "dev-master"
+>>>>>>> f7092ede50d29ab33152322f75ce513d7ce1f7b3
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

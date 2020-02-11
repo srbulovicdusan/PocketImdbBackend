@@ -8,6 +8,7 @@ use App\Services\CommentServiceImpl;
 use App\Services\MovieServiceImpl;
 use App\Services\WatchItemServiceImpl;
 use App\Services\GenreServiceImpl;
+use App\Services\MailServiceImpl;
 use App\Services\UserReactionServiceImpl;
 
 class AppServiceProvider extends ServiceProvider
@@ -49,6 +50,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             'App\Services\UserReactionService',
             UserReactionServiceImpl::class
+        );
+        $this->app->bind(
+            'App\Services\MailService',
+            MailServiceImpl::class
         );
         
     }
