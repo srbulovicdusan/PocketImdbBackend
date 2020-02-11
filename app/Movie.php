@@ -18,6 +18,10 @@ class Movie extends Model
     public function reactions(){
         return $this->hasMany('App\UserReaction');
     }
+
+    public function genre(){
+        return $this->belongsTo('App\Genre');
+    }
     public function image(){
         return $this->belongsTo('App\MovieImage');
     }

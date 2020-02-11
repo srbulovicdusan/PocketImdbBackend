@@ -1,12 +1,17 @@
 <?php
 namespace App\Services;
-use App\Genre;
+
+use App\Events\MovieCreated;
 use App\Movie;
-use App\MovieImage;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
+use App\Genre;
+use App\MovieImage;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class MovieServiceImpl implements MovieService{
+    
     public function getAllMoviesByPage($page, $perPage, $genres){
         if ($genres != null && count($genres) != 0){
             $movies =  Movie::whereIn('genre_id', $genres)->with('reactions', 'image')->get();
@@ -112,8 +117,9 @@ class MovieServiceImpl implements MovieService{
         $movie->image()->associate($savedImage);
         $movie->save();
         $movie->addToIndex();
+        event(new MovieCreated($movie));
         return $movie;
-        
+
     }
 
 }
