@@ -192,12 +192,8 @@ return [
     */
 
     'aliases' => [
-<<<<<<< HEAD
         'Image' => Intervention\Image\Facades\Image::class,
-=======
-        
         'Es' => Elasticquent\ElasticquentElasticsearchFacade::class,
->>>>>>> 756ad681303357f223ad6b245dec78170fe85a57
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
