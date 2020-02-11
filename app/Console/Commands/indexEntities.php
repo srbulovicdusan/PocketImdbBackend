@@ -46,7 +46,7 @@ class indexEntities extends Command
         );
         Movie::createIndex();
         Movie::putMapping($mappingProperties);
-        Movie::chunk(Movie::count(), function ($movies) {
+        Movie::chunk(1000, function ($movies) {
             foreach ($movies as $movie) {
                 $movie->addToIndex();
             }
