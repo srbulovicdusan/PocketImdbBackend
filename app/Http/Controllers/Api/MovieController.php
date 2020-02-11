@@ -77,6 +77,12 @@ class MovieController extends Controller
         return  $this->movieService->search($searchParam);
     }
 
+    public function elasticSearch(){
+        $data = request(['searchParam']);
+
+        return $this->movieService->elasticSearch($data['searchParam']);
+    }
+
 
     public function increaseVisits($movieId){
         $movie = Movie::find($movieId);
