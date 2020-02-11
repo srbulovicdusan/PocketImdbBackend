@@ -1,13 +1,15 @@
 <?php
 namespace App\Services;
-
 use App\Genre;
 use App\Movie;
+use App\MovieImage;
 use Illuminate\Database\Eloquent\Builder;
+use Intervention\Image\ImageManagerStatic as Image;
+
 class MovieServiceImpl implements MovieService{
     public function getAllMoviesByPage($page, $perPage, $genres){
         if ($genres != null && count($genres) != 0){
-            $movies =  Movie::whereIn('genre_id', $genres)->with('reactions')->get();
+            $movies =  Movie::whereIn('genre_id', $genres)->with('reactions', 'image')->get();
                 $movies = $movies->toArray();
                 $moviesByPage = array_chunk($movies, $perPage)[$page];
                 return array(
@@ -18,7 +20,7 @@ class MovieServiceImpl implements MovieService{
                 );
         }else{
             return array(
-                'movies' => Movie::offset($page * $perPage)->take($perPage)->with('reactions')->get(),
+                'movies' => Movie::offset($page * $perPage)->take($perPage)->with('reactions', 'image')->get(),
                 'page' => $page,
                 'perPage' => $perPage,
                 'totalPages' => Movie::all()->count()/ intval($perPage),
@@ -28,11 +30,11 @@ class MovieServiceImpl implements MovieService{
     }
     public function findRelatedMovies($movieId, $numOfMovies){
         $movie = Movie::find($movieId);
-        return Movie::with('reactions')->where('genre_id', $movie->genre_id)->where('id', '!=', $movie->id)->with('reactions')->take($numOfMovies)->get();
+        return Movie::with('reactions', 'image')->where('genre_id', $movie->genre_id)->where('id', '!=', $movie->id)->with('reactions', 'image')->take($numOfMovies)->get();
     }
 
     public function findPopularMovies($numOfMovies){
-        return Movie::with('reactions')->whereHas('reactions', function (Builder $query) {
+        return Movie::with('reactions', 'image')->whereHas('reactions', function (Builder $query) {
             $query->where('type', 'like', 'LIKE');
         })->get()->sortByDesc(function($movie, $id){
             return count($movie['reactions']->where('type', 'LIKE'));
@@ -42,7 +44,7 @@ class MovieServiceImpl implements MovieService{
         return Movie::all();
     }
     public function findOne($id){
-        return Movie::find($id)->load('reactions');
+        return Movie::find($id)->load('reactions', 'image');
     }
 
     public function search($searchParam){
@@ -66,6 +68,8 @@ class MovieServiceImpl implements MovieService{
         return Movie::count();
     }
     public function create($movie){
+        $image = $movie['image'];
+        $savedImage = null;
         $genre = $movie['genre'];
         $genreDB = Genre::where('name', strtolower($genre))->first();
         if ($genreDB == null){
@@ -73,15 +77,43 @@ class MovieServiceImpl implements MovieService{
                 'name' => strtolower($genre),
             ]);
         }
-        
+        if ($image){
+            $image_name = time() . '.' . $image->getClientOriginalExtension();
+
+            $destinationFullSize = storage_path('app/public/fullSize').'/'.$image_name;
+            $destinationThumbnail = storage_path('app/public/thumbnail').'/'.$image_name;
+
+            $createdImage= Image::make($image->getRealPath());
+
+            $createdImage->resize(400, 400, function($constraint){
+            $constraint->aspectRatio();
+            })->save($destinationFullSize);
+
+            $createdImage->resize(200, 200, function($constraint){
+                $constraint->aspectRatio();
+            })->save($destinationThumbnail);
+
+            $savedImage = MovieImage::create([
+                'fullSize' => url('storage/fullSize/'.$image_name),
+                'thumbnail' => url('storage/thumbnail/'.$image_name)
+            ]);
+        }else if ($movie['image_url']){ //this is used when creating movie from OMDB
+            $savedImage = MovieImage::create([
+                'fullSize' => $movie['image_url'],
+                'thumbnail' => $movie['image_url'],
+            ]);
+        }
         $movie = Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
-            'image_url' => $movie['image_url'],
             'num_of_visits' => 0,
             'genre_id' => $genreDB->id,
         ]);
+        $movie->image()->associate($savedImage);
+        $movie->save();
         $movie->addToIndex();
+        return $movie;
+        
     }
 
 }

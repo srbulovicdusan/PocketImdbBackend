@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Elasticquent\ElasticquentTrait;
 class Movie extends Model
 {
+    protected $fillable = ['title', 'description', 'image', 'genre_id', 'image_id'];
+
     use ElasticquentTrait;
-    protected $fillable = ['title', 'description', 'image_url', 'genre_id'];
+
 
     public function comments()
     {
@@ -15,6 +17,9 @@ class Movie extends Model
     }
     public function reactions(){
         return $this->hasMany('App\UserReaction');
+    }
+    public function image(){
+        return $this->belongsTo('App\MovieImage');
     }
     protected $indexSettings = [
         'analysis' => [
