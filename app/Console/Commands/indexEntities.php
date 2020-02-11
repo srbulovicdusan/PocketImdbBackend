@@ -44,6 +44,7 @@ class indexEntities extends Command
                  'type' => 'keyword'
              )
         );
+        Movie::deleteIndex();
         Movie::createIndex();
         Movie::putMapping($mappingProperties);
         Movie::chunk(1000, function ($movies) {

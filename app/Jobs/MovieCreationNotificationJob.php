@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Movie;
 use App\Services\MailService;
+use App\Services\MailServiceImpl;
 use App\Services\MovieService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -23,22 +24,21 @@ class MovieCreationNotificationJob implements ShouldQueue
      * @return void
      */
     private $mailService;
-    
-    public function __construct(Movie $movie, MailService $mailService)
+    public function __construct(Movie $movie)
     {
         $this->movie = $movie;
-        $this->mailService = $mailService;
-
+        //$this->mailService = new MailServiceImpl();
     }
+    
 
     /**
      * Execute the job.
      *
      * @return void
      */
-    public function handle()
+    public function handle(MailService $mailService)
     {
         $text = 'A new movie is added to the system. Title: '.$this->movie->title.', description: '.$this->movie->description.', genre: '.$this->movie->load('genre')->genre->name;
-        $this->mailService->sendEmailToAdmins($text);
+        $mailService->sendEmailToAdmins($text);
     }
 }

@@ -42,7 +42,7 @@ Route::post('reactions', 'Api\UserReactionController@store');
 Route::put('visits/movie/{movieId}', 'Api\MovieController@increaseVisits');
 
 
-Route::get('search/movies/{searchParam}', 'Api\MovieController@search');
+Route::get('search/movies', 'Api\MovieController@search');
 Route::post('elasticSearch/movies', 'Api\movieController@elasticSearch');
 
 Route::get('watchlist', 'Api\WatchItemController@index');

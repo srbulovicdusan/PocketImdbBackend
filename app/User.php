@@ -51,4 +51,8 @@ class User extends Authenticatable implements JWTSubject
     public function watchlist(){
         return $this->hasMany('App\WatchItem');
     }
+    public function reactions(){
+        return $this->hasMany('App\UserReaction');
+
+    }
 }
