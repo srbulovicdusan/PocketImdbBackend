@@ -1,5 +1,7 @@
 <?php
 namespace App\Services;
+
+use App\Genre;
 use App\Movie;
 use Illuminate\Database\Eloquent\Builder;
 class MovieServiceImpl implements MovieService{
@@ -64,12 +66,20 @@ class MovieServiceImpl implements MovieService{
         return Movie::count();
     }
     public function create($movie){
+        $genre = $movie['genre'];
+        $genreDB = Genre::where('name', strtolower($genre))->first();
+        if ($genreDB == null){
+            $genreDB = Genre::create([
+                'name' => strtolower($genre),
+            ]);
+        }
+        
         $movie = Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
             'image_url' => $movie['image_url'],
             'num_of_visits' => 0,
-            'genre_id' => $movie['genre_id'],
+            'genre_id' => $genreDB->id,
         ]);
         $movie->addToIndex();
     }

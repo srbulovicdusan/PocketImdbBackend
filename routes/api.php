@@ -40,6 +40,8 @@ Route::post('comments', 'Api\CommentController@create');
 Route::post('reactions', 'Api\UserReactionController@store');
 
 Route::put('visits/movie/{movieId}', 'Api\MovieController@increaseVisits');
+
+
 Route::get('search/movies/{searchParam}', 'Api\MovieController@search');
 Route::post('elasticSearch/movies', 'Api\movieController@elasticSearch');
 
