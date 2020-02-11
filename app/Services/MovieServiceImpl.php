@@ -53,7 +53,7 @@ class MovieServiceImpl implements MovieService{
     }
 
     public function search($searchParam){
-        return  Movie::where('title', $searchParam)->with('reactions')->get();
+        return  Movie::where('title', $searchParam)->with('reactions')->with('image')->get();
     }
     public function elasticSearch($searchParam){
         $movies= Movie::complexSearch(array(
@@ -73,7 +73,7 @@ class MovieServiceImpl implements MovieService{
         return Movie::count();
     }
     public function create($movie){
-        $image = $movie['image'];
+        
         $savedImage = null;
         $genre = $movie['genre'];
         $genreDB = Genre::where('name', strtolower($genre))->first();
@@ -82,7 +82,8 @@ class MovieServiceImpl implements MovieService{
                 'name' => strtolower($genre),
             ]);
         }
-        if ($image){
+        if (!empty($movie['image'])){
+            $image = $movie['image'];
             $image_name = time() . '.' . $image->getClientOriginalExtension();
 
             $destinationFullSize = storage_path('app/public/fullSize').'/'.$image_name;

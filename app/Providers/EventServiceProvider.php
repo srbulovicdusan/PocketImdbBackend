@@ -17,7 +17,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         
         'App\Events\MovieCreated' => [
-            'App\Listeners\MovieCreateNotification',
+            'App\Listeners\MovieCreateListener',
         ],
     ];
 

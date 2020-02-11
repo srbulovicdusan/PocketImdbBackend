@@ -15,6 +15,7 @@
         "intervention/image": "^2.5",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+        "pda/pheanstalk": "^4.0",
         "tymon/jwt-auth": "dev-develop",
         "elasticquent/elasticquent": "dev-master"
     },
