@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 
 class MovieServiceImpl implements MovieService{
+    
     public function getAllMoviesByPage($page, $perPage, $genres){
         if ($genres != null && count($genres) != 0){
             $movies =  Movie::whereIn('genre_id', $genres)->with('reactions')->get();
