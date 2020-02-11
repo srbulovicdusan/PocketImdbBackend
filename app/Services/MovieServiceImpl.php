@@ -48,6 +48,19 @@ class MovieServiceImpl implements MovieService{
     public function search($searchParam){
         return  Movie::where('title', $searchParam)->with('reactions')->get();
     }
+    public function elasticSearch($searchParam){
+        $movies= Movie::complexSearch(array(
+            'body' => array(
+                'query' => array(
+                    'match' => array(
+                        'title' => $searchParam,
+                    )   
+                )
+            )
+        ));
+        return $movies;
+    }
+
 
     public function count(){
         return Movie::count();
@@ -60,13 +73,15 @@ class MovieServiceImpl implements MovieService{
                 'name' => strtolower($genre),
             ]);
         }
-        return Movie::create([
+        
+        $movie = Movie::create([
             'title' => $movie['title'],
             'description' => $movie['description'],
             'image_url' => $movie['image_url'],
             'num_of_visits' => 0,
             'genre_id' => $genreDB->id,
         ]);
+        $movie->addToIndex();
     }
 
 }
